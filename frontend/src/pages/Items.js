@@ -17,8 +17,19 @@ function Items() {
     }, []);
 
     const handleAddItem = async (newItem) => {
-        await addItem(newItem);
-        setItems([...items, newItem]);
+        const item = {
+            id: Date.now().toString(),
+            startTime: newItem.startTime || "",
+            endTime: newItem.endTime || "",
+            startMileage: newItem.startMileage || 0,
+            endMileage: newItem.endMileage || 0,
+            driverName: newItem.driverName || "Unknown Driver",
+            licensePlate: newItem.licensePlate || "Unknown Plate",
+        };
+    
+        console.log("Sending data to API:", item);
+        await addItem(item);
+        setItems([...items, item]);    
         handleClose(); // Zamykamy popup po dodaniu wpisu
     };
 

@@ -6,6 +6,7 @@ export const fetchItems = async () => {
 };
 
 export const addItem = async (item) => {
+    console.log("Sending data to API:", item); // Sprawdź dane
     await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
