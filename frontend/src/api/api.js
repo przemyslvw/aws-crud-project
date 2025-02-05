@@ -21,10 +21,13 @@ export const deleteItem = async (id) => {
 };
 
 export const updateItem = async (id, updatedItem) => {
-    await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedItem),
     });
+    if (!response.ok) {
+        throw new Error(`Failed to update item with id: ${id}`);
+    }
+    return response.json();
 };
-
