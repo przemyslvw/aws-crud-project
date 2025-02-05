@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Box } from "@mui/material";
 
-function ItemForm({ onAdd, initialData = null, buttonText = "Register Work" }) {
+function ItemForm({ onAdd, initialData = null, buttonText = "Zarejestruj Pracę" }) {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [startMileage, setStartMileage] = useState("");
@@ -25,12 +25,12 @@ function ItemForm({ onAdd, initialData = null, buttonText = "Register Work" }) {
 
         // Walidacja podstawowych danych
         if (!startTime || !endTime || !startMileage || !endMileage || !licensePlate || !driverName) {
-            alert("Please fill in all fields!");
+            alert("Proszę wypełnić wszystkie pola!");
             return;
         }
 
         if (parseFloat(endMileage) < parseFloat(startMileage)) {
-            alert("End mileage must be greater than start mileage!");
+            alert("Końcowy przebieg musi być większy niż początkowy!");
             return;
         }
 
@@ -58,19 +58,19 @@ function ItemForm({ onAdd, initialData = null, buttonText = "Register Work" }) {
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <TextField
-                label="Driver Name"
+                label="Imię Kierowcy"
                 value={driverName}
                 onChange={(e) => setDriverName(e.target.value)}
                 required
             />
             <TextField
-                label="License Plate"
+                label="Numer Rejestracyjny"
                 value={licensePlate}
                 onChange={(e) => setLicensePlate(e.target.value)}
                 required
             />
             <TextField
-                label="Start Time"
+                label="Czas Rozpoczęcia"
                 type="datetime-local"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
@@ -78,7 +78,7 @@ function ItemForm({ onAdd, initialData = null, buttonText = "Register Work" }) {
                 required
             />
             <TextField
-                label="End Time"
+                label="Czas Zakończenia"
                 type="datetime-local"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
@@ -86,14 +86,14 @@ function ItemForm({ onAdd, initialData = null, buttonText = "Register Work" }) {
                 required
             />
             <TextField
-                label="Start Mileage (km)"
+                label="Początkowy Przebieg (km)"
                 type="number"
                 value={startMileage}
                 onChange={(e) => setStartMileage(e.target.value)}
                 required
             />
             <TextField
-                label="End Mileage (km)"
+                label="Końcowy Przebieg (km)"
                 type="number"
                 value={endMileage}
                 onChange={(e) => setEndMileage(e.target.value)}
