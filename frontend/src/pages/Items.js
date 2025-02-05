@@ -39,27 +39,37 @@ function Items() {
 
     return (
         <Box sx={{ maxWidth: "600px", margin: "auto", padding: 2 }}>
-            <h1>Items List</h1>
+            <h1>Work Logs</h1>
             {editingItem ? (
                 <ItemForm
                     onAdd={handleUpdateItem}
                     initialData={editingItem}
-                    buttonText="Update Item"
+                    buttonText="Update Work"
                 />
             ) : (
                 <ItemForm onAdd={handleAddItem} />
             )}
             <List>
                 {items.map((item) => (
-                    <ListItem key={item.id} sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <ListItemText primary={item.name} secondary={item.description} />
-                        <Box>
+                    <ListItem key={item.id} sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: 1 }}>
+                        <ListItemText
+                            primary={`Driver: ${item.driverName}`}
+                            secondary={`License Plate: ${item.licensePlate}`}
+                        />
+                        <ListItemText
+                            primary={`Start Time: ${item.startTime}`}
+                            secondary={`End Time: ${item.endTime}`}
+                        />
+                        <ListItemText
+                            primary={`Start Mileage: ${item.startMileage} km`}
+                            secondary={`End Mileage: ${item.endMileage} km`}
+                        />
+                        <Box sx={{ display: "flex", gap: 1 }}>
                             <Button
                                 variant="outlined"
                                 color="primary"
                                 size="small"
                                 onClick={() => handleEditItem(item)}
-                                sx={{ marginRight: 1 }}
                             >
                                 Edit
                             </Button>
