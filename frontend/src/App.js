@@ -15,13 +15,13 @@ function App() {
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                            CRUD App
+                            Rejestr Pracy Kierowców 🚛
                         </Typography>
                         <Button color="inherit" component={Link} to="/">
                             Home
                         </Button>
                         <Button color="inherit" component={Link} to="/items">
-                            Items
+                            Rejestr Pracy
                         </Button>
                     </Toolbar>
                 </AppBar>

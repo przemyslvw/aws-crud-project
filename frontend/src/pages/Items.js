@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { fetchItems, addItem, deleteItem, updateItem } from "../api/api";
 import ItemForm from "../components/ItemForm";
-import { Box, List, ListItem, ListItemText, Button } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 function Items() {
     const [items, setItems] = useState([]);
     const [editingItem, setEditingItem] = useState(null);
+    const [open, setOpen] = useState(false); // Stan kontrolujący otwieranie popupu
 
     useEffect(() => {
         const loadItems = async () => {
@@ -18,6 +19,7 @@ function Items() {
     const handleAddItem = async (newItem) => {
         await addItem(newItem);
         setItems([...items, newItem]);
+        handleClose(); // Zamykamy popup po dodaniu wpisu
     };
 
     const handleDeleteItem = async (id) => {
@@ -27,6 +29,7 @@ function Items() {
 
     const handleEditItem = (item) => {
         setEditingItem(item);
+        setOpen(true); // Otwieramy popup do edycji
     };
 
     const handleUpdateItem = async (updatedItem) => {
@@ -34,51 +37,53 @@ function Items() {
         setItems(
             items.map((item) => (item.id === updatedItem.id ? updatedItem : item))
         );
+        handleClose(); // Zamykamy popup po edycji
+    };
+
+    const handleOpen = () => {
+        setEditingItem(null); // Nowy wpis, więc kasujemy edycję
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
         setEditingItem(null);
     };
 
     return (
         <Box sx={{ maxWidth: "600px", margin: "auto", padding: 2 }}>
             <h1>Work Logs</h1>
-            {editingItem ? (
-                <ItemForm
-                    onAdd={handleUpdateItem}
-                    initialData={editingItem}
-                    buttonText="Update Work"
-                />
-            ) : (
-                <ItemForm onAdd={handleAddItem} />
-            )}
+
+            {/* Przycisk otwierający popup */}
+            <Button variant="contained" color="primary" onClick={handleOpen} sx={{ marginBottom: 2 }}>
+                Dodaj Nowy Rejestr
+            </Button>
+
+            {/* Popup z formularzem */}
+            <Dialog open={open} onClose={handleClose} fullWidth>
+                <DialogTitle>{editingItem ? "Edytuj Rejestr" : "Dodaj Nowy Rejestr"}</DialogTitle>
+                <DialogContent>
+                    <ItemForm onAdd={editingItem ? handleUpdateItem : handleAddItem} initialData={editingItem} buttonText={editingItem ? "Zapisz zmiany" : "Dodaj"} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="secondary">
+                        Anuluj
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Lista wpisów */}
             <List>
                 {items.map((item) => (
                     <ListItem key={item.id} sx={{ display: "flex", flexDirection: "column", alignItems: "start", gap: 1 }}>
-                        <ListItemText
-                            primary={`Driver: ${item.driverName}`}
-                            secondary={`License Plate: ${item.licensePlate}`}
-                        />
-                        <ListItemText
-                            primary={`Start Time: ${item.startTime}`}
-                            secondary={`End Time: ${item.endTime}`}
-                        />
-                        <ListItemText
-                            primary={`Start Mileage: ${item.startMileage} km`}
-                            secondary={`End Mileage: ${item.endMileage} km`}
-                        />
+                        <ListItemText primary={`Driver: ${item.driverName}`} secondary={`License Plate: ${item.licensePlate}`} />
+                        <ListItemText primary={`Start Time: ${item.startTime}`} secondary={`End Time: ${item.endTime}`} />
+                        <ListItemText primary={`Start Mileage: ${item.startMileage} km`} secondary={`End Mileage: ${item.endMileage} km`} />
                         <Box sx={{ display: "flex", gap: 1 }}>
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
-                                onClick={() => handleEditItem(item)}
-                            >
+                            <Button variant="outlined" color="primary" size="small" onClick={() => handleEditItem(item)}>
                                 Edit
                             </Button>
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                size="small"
-                                onClick={() => handleDeleteItem(item.id)}
-                            >
+                            <Button variant="outlined" color="secondary" size="small" onClick={() => handleDeleteItem(item.id)}>
                                 Delete
                             </Button>
                         </Box>
